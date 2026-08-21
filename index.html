@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Speed to Lead Audit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340;9..144,480;9..144,560;9..144,680&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ============ TOKENS ============ */
+      :root {
+        --ground: #fbf5e4;
+        --surface: #ffffff;
+        --surface-sunk: #f3ecd6;
+        --ink: #17332a;
+        --ink-soft: #4a5d53;
+        --line: #dcd2b4;
+        --accent: #d98f2b;
+        --accent-deep: #b9721a;
+        --accent-ink: #ffffff;
+        --good: #3e7a54;
+        --warn: #c4791e;
+        --bad: #b0472e;
+        --shadow:
+          0 1px 2px rgba(23, 51, 42, 0.06),
+          0 12px 32px -16px rgba(23, 51, 42, 0.22);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --ground: #122019;
+          --surface: #183327;
+          --surface-sunk: #0f1c16;
+          --ink: #f6efda;
+          --ink-soft: #b9c7bd;
+          --line: #2c4a3b;
+          --accent: #e3a340;
+          --accent-deep: #f0b45e;
+          --accent-ink: #17332a;
+          --good: #6fbe87;
+          --warn: #e3a340;
+          --bad: #e07f63;
+          --shadow:
+            0 1px 2px rgba(0, 0, 0, 0.3), 0 24px 48px -20px rgba(0, 0, 0, 0.6);
+        }
+      }
+      :root[data-theme="dark"] {
+        --ground: #122019;
+        --surface: #183327;
+        --surface-sunk: #0f1c16;
+        --ink: #f6efda;
+        --ink-soft: #b9c7bd;
+        --line: #2c4a3b;
+        --accent: #e3a340;
+        --accent-deep: #f0b45e;
+        --accent-ink: #17332a;
+        --good: #6fbe87;
+        --warn: #e3a340;
+        --bad: #e07f63;
+        --shadow:
+          0 1px 2px rgba(0, 0, 0, 0.3), 0 24px 48px -20px rgba(0, 0, 0, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--ground);
+        color: var(--ink);
+        font-family:
+          "Work Sans",
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.001ms !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Fraunces", Georgia, "Times New Roman", serif;
+        font-weight: 560;
+        line-height: 1.12;
+        text-wrap: balance;
+        margin: 0;
+        color: var(--ink);
+        font-size: 1.5rem;
+      }
+      .mono {
+        font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .wrap {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 28px 20px 64px;
+      }
+
+      /* ============ BRAND HEADER ============ */
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 34px;
+      }
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .brand-mark svg {
+        width: 22px;
+        height: 22px;
+        display: block;
+      }
+      .brand-name {
+        font-family: "Fraunces", serif;
+        font-weight: 560;
+        font-size: 1.05rem;
+        letter-spacing: 0.01em;
+        color: var(--ink);
+      }
+      .brand-sub {
+        font-size: 0.72rem;
+        color: var(--ink-soft);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-top: 1px;
+      }
+
+      /* ============ SCREENS ============ */
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+        animation: rise 0.38s ease both;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ============ INTRO ============ */
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--accent-deep);
+        background: color-mix(in srgb, var(--accent) 14%, transparent);
+        padding: 5px 11px;
+        border-radius: 100px;
+        margin-bottom: 16px;
+      }
+      h1.title {
+        font-size: 2.1875rem;
+        margin-bottom: 14px;
+      }
+      .lede {
+        font-size: 1.125rem;
+        color: var(--ink-soft);
+        max-width: 52ch;
+        margin-bottom: 6px;
+      }
+      .quote {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-weight: 480;
+        font-size: 1.18rem;
+        color: var(--ink);
+        border-left: 3px solid var(--accent);
+        padding-left: 16px;
+        margin: 26px 0 30px;
+      }
+
+      .meta-row {
+        display: flex;
+        gap: 18px;
+        color: var(--ink-soft);
+        font-size: 0.85rem;
+        margin-bottom: 28px;
+      }
+      .meta-row span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* ============ BUTTONS ============ */
+      .btn {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        font-family: "Work Sans", sans-serif;
+        font-weight: 600;
+        font-size: 0.98rem;
+        border-radius: 11px;
+        padding: 15px 26px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.15s ease,
+          background 0.15s ease;
+      }
+      .btn:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        box-shadow: 0 10px 24px -10px
+          color-mix(in srgb, var(--accent) 70%, transparent);
+      }
+      .btn-primary:hover {
+        background: var(--accent-deep);
+        transform: translateY(-1px);
+      }
+      .btn-primary:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink-soft);
+        border: 1px solid var(--line);
+      }
+      .btn-ghost:hover {
+        color: var(--ink);
+        border-color: var(--ink-soft);
+      }
+      .btn-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 8px;
+      }
+      .btn-full {
+        width: 100%;
+      }
+
+      /* ============ PROGRESS ============ */
+      .progress-wrap {
+        margin-bottom: 30px;
+      }
+      .progress-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 9px;
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+      }
+      .progress-labels .mono {
+        color: var(--accent-deep);
+        font-weight: 600;
+      }
+      .progress-track {
+        height: 6px;
+        border-radius: 100px;
+        background: var(--surface-sunk);
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 100px;
+        transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* ============ SECTION SCREENS ============ */
+      .section-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent-deep);
+        margin-bottom: 8px;
+      }
+      h2.section-title {
+        font-size: 2.1875rem;
+        margin-bottom: 26px;
+      }
+
+      .q-list {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin-bottom: 8px;
+      }
+      .q-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px 18px 16px;
+        box-shadow: var(--shadow);
+      }
+      .q-text {
+        font-size: 1.125rem;
+        margin-bottom: 13px;
+        color: var(--ink);
+      }
+      .q-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+      }
+      .opt {
+        appearance: none;
+        cursor: pointer;
+        text-align: center;
+        font-family: "Work Sans", sans-serif;
+        font-size: 0.84rem;
+        font-weight: 500;
+        padding: 10px 6px;
+        border-radius: 9px;
+        background: var(--surface-sunk);
+        color: var(--ink-soft);
+        border: 1.5px solid transparent;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          border-color 0.15s ease;
+      }
+      .opt:hover {
+        border-color: var(--line);
+      }
+      .opt.selected {
+        background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+        color: var(--accent-deep);
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+      .opt:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      /* ============ LEAD CAPTURE ============ */
+      .field {
+        margin-bottom: 16px;
+      }
+      .field label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--ink-soft);
+        margin-bottom: 7px;
+      }
+      .field input {
+        width: 100%;
+        font-family: "Work Sans", sans-serif;
+        font-size: 1rem;
+        padding: 13px 14px;
+        border-radius: 10px;
+        border: 1.5px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+      }
+      .field input:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      .privacy-note {
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+        margin: 14px 0 22px;
+      }
+
+      /* ============ RESULTS ============ */
+      .score-block {
+        background: var(--ink);
+        color: var(--ground);
+        border-radius: 20px;
+        padding: 34px 26px;
+        text-align: center;
+        margin-bottom: 26px;
+        box-shadow: var(--shadow);
+      }
+      :root[data-theme="dark"] .score-block,
+      @media (prefers-color-scheme: dark) {
+      }
+      .score-num {
+        font-family: "Fraunces", serif;
+        font-weight: 680;
+        font-size: 3.6rem;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+      .score-num span {
+        font-size: 1.5rem;
+        opacity: 0.6;
+        font-weight: 480;
+      }
+      .score-tag {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .score-tag.band-high {
+        background: color-mix(in srgb, var(--good) 30%, transparent);
+        color: #dff3e4;
+      }
+      .score-tag.band-mid {
+        background: color-mix(in srgb, var(--warn) 32%, transparent);
+        color: #fbe8cd;
+      }
+      .score-tag.band-low {
+        background: color-mix(in srgb, var(--bad) 32%, transparent);
+        color: #fbdcd3;
+      }
+
+      .verdict {
+        font-size: 1.125rem;
+        margin-bottom: 22px;
+      }
+      .cost-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px 20px;
+        margin-bottom: 22px;
+        box-shadow: var(--shadow);
+      }
+      .cost-card h3 {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+      }
+      .cost-card ul {
+        margin: 0;
+        padding-left: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .cost-card li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        font-size: 0.92rem;
+        color: var(--ink-soft);
+      }
+      .cost-card li::before {
+        content: "•";
+        color: var(--accent-deep);
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .section-breakdown {
+        margin-bottom: 26px;
+      }
+      .section-breakdown h3 {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+      }
+      .sb-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 9px;
+        font-size: 0.86rem;
+      }
+      .sb-name {
+        width: 150px;
+        flex-shrink: 0;
+        color: var(--ink-soft);
+      }
+      .sb-track {
+        flex: 1;
+        height: 8px;
+        border-radius: 100px;
+        background: var(--surface-sunk);
+        overflow: hidden;
+      }
+      .sb-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 100px;
+      }
+      .sb-val {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8rem;
+        width: 2.6em;
+        text-align: right;
+        color: var(--ink-soft);
+      }
+
+      .cta-card {
+        background: linear-gradient(160deg, var(--accent), var(--accent-deep));
+        color: var(--accent-ink);
+        border-radius: 18px;
+        padding: 28px 24px;
+        text-align: center;
+        box-shadow: 0 16px 36px -14px
+          color-mix(in srgb, var(--accent) 60%, transparent);
+      }
+      .cta-card h3 {
+        color: var(--accent-ink);
+        font-size: 2.1875rem;
+        margin-bottom: 8px;
+      }
+      .cta-card p {
+        font-size: 1.125rem;
+        opacity: 0.92;
+        margin-bottom: 20px;
+        max-width: 40ch;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .cta-card .btn-primary {
+        background: var(--accent-ink);
+        color: var(--accent-deep);
+      }
+      .cta-card .btn-primary:hover {
+        background: var(--surface);
+      }
+
+      .restart-link {
+        display: block;
+        text-align: center;
+        margin-top: 22px;
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      footer.foot {
+        text-align: center;
+        margin-top: 44px;
+        font-size: 0.76rem;
+        color: var(--ink-soft);
+      }
+
+      @media (max-width: 420px) {
+        .q-options {
+          grid-template-columns: 1fr;
+        }
+        h1.title,
+        h2.section-title,
+        #results-greeting,
+        .cta-card h3 {
+          font-size: 1.75rem;
+        }
+        .score-num {
+          font-size: 2.9rem;
+        }
+      }
+
+      /* ============ PRINT / PDF ============ */
+      @media print {
+        body {
+          background: #ffffff;
+        }
+        .brand,
+        .btn-row,
+        .restart-link,
+        footer.foot {
+          display: none !important;
+        }
+        .screen {
+          display: none !important;
+        }
+        #screen-results.screen {
+          display: block !important;
+        }
+        .score-block {
+          background: #17332a !important;
+          color: #fbf5e4 !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .cta-card {
+          background: #d98f2b !important;
+          color: #ffffff !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .cta-card .btn-primary {
+          display: none;
+        }
+        .cta-card::after {
+          content: "Book at amigomarketing.com.au/book-now";
+          display: block;
+          font-weight: 600;
+          margin-top: 4px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M30 78L44 22H56L70 78H58L55.5 66H44.5L42 78H30ZM46.5 56H53.5L50 40L46.5 56Z"
+              fill="#FBF5E4"
+            />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">Amigo Marketing</div>
+          <div class="brand-sub">The Speed to Lead Audit</div>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN 1: INTRO ============ -->
+      <section class="screen active" id="screen-intro">
+        <span class="eyebrow">3-minute self-audit</span>
+        <h1 class="title">
+          Are you winning or losing leads in the first five minutes?
+        </h1>
+        <p class="lede">
+          Most businesses do not lose leads because of a bad offer. They lose
+          them because they respond too slowly. This audit shows you exactly
+          where.
+        </p>
+
+        <p class="quote">
+          "Most businesses do not have a marketing problem. They have a
+          follow-up problem."
+        </p>
+
+        <div class="meta-row">
+          <span>3 minutes</span>
+          <span>24 questions</span>
+          <span>5 sections</span>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="goTo('section-0')">
+          Start the audit
+        </button>
+      </section>
+
+      <!-- ============ SECTION SCREENS (generated by JS) ============ -->
+      <div id="sections-mount"></div>
+
+      <!-- ============ LEAD CAPTURE ============ -->
+      <section class="screen" id="screen-capture">
+        <span class="section-label">Almost there</span>
+        <h2 class="section-title">Where should we show your results?</h2>
+        <p class="lede" style="margin-bottom: 24px">
+          Your score, your section breakdown, and what it's likely costing you.
+        </p>
+
+        <form id="capture-form" onsubmit="showResults(event)">
+          <div class="field">
+            <label for="cap-name">First name</label>
+            <input
+              id="cap-name"
+              type="text"
+              autocomplete="given-name"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="cap-email">Work email</label>
+            <input id="cap-email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="cap-business">Business name</label>
+            <input id="cap-business" type="text" autocomplete="organization" />
+          </div>
+          <p class="privacy-note">
+            We will not spam you or sell your details. This just lets us tell
+            you where you land against other established service businesses.
+          </p>
+          <button type="submit" class="btn btn-primary btn-full">
+            See my results
+          </button>
+        </form>
+      </section>
+
+      <!-- ============ RESULTS ============ -->
+      <section class="screen" id="screen-results">
+        <span class="eyebrow">Your results</span>
+        <h1 class="title" id="results-greeting">Here's where you stand</h1>
+
+        <div class="score-block">
+          <div class="score-num mono">
+            <span id="score-value">0</span><span>/48</span>
+          </div>
+          <div class="score-tag mono" id="score-tag">Band</div>
+        </div>
+
+        <p class="verdict" id="verdict-text"></p>
+
+        <div class="section-breakdown">
+          <h3>By section</h3>
+          <div id="breakdown-mount"></div>
+        </div>
+
+        <div class="cost-card">
+          <h3>What this is likely costing you</h3>
+          <ul id="cost-list"></ul>
+        </div>
+
+        <div class="cta-card" style="margin-top: 22px">
+          <h3>Ready to fix your speed to lead?</h3>
+          <p>
+            A Business Growth Review shows you exactly where leads are falling
+            through, and what to fix first.
+          </p>
+          <a
+            class="btn btn-primary"
+            href="https://amigomarketing.com.au/book-now"
+            target="_blank"
+            rel="noopener"
+            >Book a Business Growth Review</a
+          >
+        </div>
+
+        <div class="btn-row" style="margin-top: 22px">
+          <button
+            class="btn btn-ghost"
+            style="flex: 1"
+            onclick="window.print()"
+          >
+            Download my results as a PDF
+          </button>
+        </div>
+        <button class="restart-link" onclick="restart()">Start over</button>
+      </section>
+
+      <footer class="foot">
+        Amigo Marketing &middot; amigomarketing.com.au
+      </footer>
+    </div>
+
+    <script>
+      /* ============ QUIZ DATA ============ */
+      const SECTIONS = [
+        {
+          id: "speed",
+          name: "Speed to lead",
+          questions: [
+            "Do you respond to every new lead within five minutes?",
+            "Do you have an automated first reply set up for new enquiries?",
+            "Are leads getting an instant reply, not one that arrives hours later?",
+            "Do you track your average response time?",
+            "Do new leads get priority over other tasks on a busy day?",
+          ],
+        },
+        {
+          id: "coverage",
+          name: "Coverage: nights and weekends",
+          questions: [
+            "Do you have a plan for leads that come in after hours?",
+            "Are after-hours messages answered instantly, not the next morning?",
+            "Do you capture and respond to enquiries outside business hours?",
+            "Are you covering the busy periods when your team is flat out?",
+            "Do you have a backup system for when nobody can reply manually?",
+          ],
+        },
+        {
+          id: "channels",
+          name: "Channel coverage",
+          questions: [
+            "Do you respond to leads across every channel: SMS, WhatsApp, Instagram, Facebook, website chat?",
+            "Do all of those conversations land in one place?",
+            "Is your response time consistent no matter which channel a lead uses?",
+            "Do messages from social platforms ever get missed?",
+          ],
+        },
+        {
+          id: "automation",
+          name: "Automation and engagement",
+          questions: [
+            "Does every new lead get an automatic SMS or WhatsApp message?",
+            "Do your automated responses sound like a person, not a robot?",
+            "Do you ask follow-up questions to qualify a lead before they speak to your team?",
+            "Does the conversation guide the lead toward a next step: a call, a booking, a reply?",
+            "Are you capturing the details that matter: name, need, intent?",
+          ],
+        },
+        {
+          id: "conversion",
+          name: "Conversion readiness",
+          questions: [
+            "Can a lead book an appointment directly from the conversation?",
+            "Do you follow up automatically if a lead goes quiet?",
+            "Are there workflows that trigger from a conversation, not just a form?",
+            "Are conversations connected to your CRM and pipeline?",
+            "Can your team step into a conversation seamlessly when it needs a human?",
+          ],
+        },
+      ];
+
+      const TOTAL_Q = SECTIONS.reduce((n, s) => n + s.questions.length, 0);
+      const MAX_SCORE = TOTAL_Q * 2;
+      const answers = {}; // key "sIdx-qIdx" -> 0/1/2
+
+      /* ============ GHL LEAD CAPTURE ============
+         Replace GHL_FORM_WEBHOOK_URL with your GoHighLevel form's
+         public submission endpoint (Sites > Forms > your form > Integrate
+         > Post URL), or a workflow webhook URL. See the setup guide
+         (2026-08-21_speed-to-lead-audit_ghl-setup-guide_v01.md) for the
+         exact fields this sends and how to build the workflow. Leave
+         this untouched until you have a real endpoint: the page checks
+         for the placeholder and silently skips the network call so the
+         quiz keeps working either way. */
+      const GHL_FORM_WEBHOOK_URL = "REPLACE_WITH_YOUR_GHL_FORM_ENDPOINT";
+
+      function sendToGHL(payload) {
+        if (
+          !GHL_FORM_WEBHOOK_URL ||
+          GHL_FORM_WEBHOOK_URL.startsWith("REPLACE_")
+        )
+          return;
+        fetch(GHL_FORM_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }).catch(() => {
+          /* network/CORS failure should never block the quiz results */
+        });
+      }
+
+      /* ============ BUILD SECTION SCREENS ============ */
+      const mount = document.getElementById("sections-mount");
+      SECTIONS.forEach((section, sIdx) => {
+        const el = document.createElement("div");
+        el.className = "screen";
+        el.id = "section-" + sIdx;
+
+        const stepNum = sIdx + 1;
+        el.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-labels">
+        <span>Section ${stepNum} of ${SECTIONS.length}</span>
+        <span class="mono">${Math.round((sIdx / SECTIONS.length) * 100)}%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${(sIdx / SECTIONS.length) * 100}%"></div></div>
+    </div>
+    <div class="section-label">Section ${String(stepNum).padStart(2, "0")}</div>
+    <h2 class="section-title">${section.name}</h2>
+    <div class="q-list">
+      ${section.questions
+        .map(
+          (q, qIdx) => `
+        <div class="q-card">
+          <div class="q-text">${q}</div>
+          <div class="q-options" data-key="${sIdx}-${qIdx}">
+            <button type="button" class="opt" data-val="0" onclick="selectOpt(this,${sIdx},${qIdx},0)">No</button>
+            <button type="button" class="opt" data-val="1" onclick="selectOpt(this,${sIdx},${qIdx},1)">Sometimes</button>
+            <button type="button" class="opt" data-val="2" onclick="selectOpt(this,${sIdx},${qIdx},2)">Yes</button>
+          </div>
+        </div>
+      `,
+        )
+        .join("")}
+    </div>
+    <div class="btn-row">
+      ${sIdx > 0 ? `<button class="btn btn-ghost" onclick="goTo('section-${sIdx - 1}')">Back</button>` : `<button class="btn btn-ghost" onclick="goTo('screen-intro')">Back</button>`}
+      <button class="btn btn-primary" style="flex:1" id="next-${sIdx}" disabled onclick="nextSection(${sIdx})">
+        ${sIdx === SECTIONS.length - 1 ? "See my results" : "Next section"}
+      </button>
+    </div>
+  `;
+        mount.appendChild(el);
+      });
+
+      function selectOpt(btn, sIdx, qIdx, val) {
+        const group = btn.parentElement;
+        group
+          .querySelectorAll(".opt")
+          .forEach((o) => o.classList.remove("selected"));
+        btn.classList.add("selected");
+        answers[sIdx + "-" + qIdx] = val;
+        checkSectionComplete(sIdx);
+      }
+
+      function checkSectionComplete(sIdx) {
+        const total = SECTIONS[sIdx].questions.length;
+        let answered = 0;
+        for (let q = 0; q < total; q++) {
+          if (answers[sIdx + "-" + q] !== undefined) answered++;
+        }
+        document.getElementById("next-" + sIdx).disabled = answered < total;
+      }
+
+      function nextSection(sIdx) {
+        if (sIdx === SECTIONS.length - 1) {
+          goTo("screen-capture");
+        } else {
+          goTo("section-" + (sIdx + 1));
+        }
+      }
+
+      /* ============ NAVIGATION ============ */
+      function goTo(id) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function restart() {
+        Object.keys(answers).forEach((k) => delete answers[k]);
+        document
+          .querySelectorAll(".opt.selected")
+          .forEach((o) => o.classList.remove("selected"));
+        document
+          .querySelectorAll('[id^="next-"]')
+          .forEach((b) => (b.disabled = true));
+        document.getElementById("capture-form").reset();
+        goTo("screen-intro");
+      }
+
+      /* ============ RESULTS ============ */
+      function showResults(e) {
+        e.preventDefault();
+        const name = document.getElementById("cap-name").value.trim();
+
+        let total = 0;
+        const sectionScores = SECTIONS.map((section, sIdx) => {
+          let sScore = 0;
+          section.questions.forEach((q, qIdx) => {
+            sScore += answers[sIdx + "-" + qIdx] || 0;
+          });
+          total += sScore;
+          return {
+            name: section.name,
+            score: sScore,
+            max: section.questions.length * 2,
+          };
+        });
+
+        document.getElementById("results-greeting").textContent = name
+          ? `Nice one, ${name}. Here's where you stand.`
+          : `Here's where you stand`;
+        document.getElementById("score-value").textContent = total;
+
+        const tag = document.getElementById("score-tag");
+        const verdict = document.getElementById("verdict-text");
+        const costList = document.getElementById("cost-list");
+
+        let band, tagText, verdictText, costs;
+
+        if (total >= 34) {
+          band = "high";
+          tagText = "Fast";
+          verdictText = `You are operating at genuine speed. Most leads are getting captured, answered, and moved somewhere. The businesses that keep this up rarely lose a deal to slow follow-up. A Growth Review would tell you exactly where your next constraint sits, since speed alone will not fix everything.`;
+          costs = [
+            "A small number of leads are still slipping through the gaps below",
+            "Manual effort is likely propping up parts of this, which will not scale as you grow",
+            "Without visibility on the numbers, you cannot tell how much this speed is actually worth",
+          ];
+        } else if (total >= 18) {
+          band = "mid";
+          tagText = "Leaking";
+          verdictText = `Not bad, but there are real gaps. Somewhere in this list, leads are going quiet before your team even sees them. That is not a lead generation problem. It is a follow-up problem, and it is fixable in weeks, not months.`;
+          costs = [
+            "Leads go cold while they wait for a reply that never comes fast enough",
+            "Competitors who respond first are winning conversations you already paid to start",
+            "Marketing spend is being wasted on enquiries nobody follows up properly",
+          ];
+        } else {
+          band = "low";
+          tagText = "Losing deals";
+          verdictText = `You are likely losing most of what you are already paying for. A missed call is not just a missed call. In most service businesses, it is $500 to $5,000 walking out the door. The first business to respond usually wins, and right now, that is probably not you.`;
+          costs = [
+            "Leads go cold within minutes and rarely come back",
+            "Competitors are winning the conversation before you even see the message",
+            "Every dollar spent on ads or referrals is leaking out through slow response",
+          ];
+        }
+
+        tag.textContent = tagText;
+        tag.className = "score-tag mono band-" + band;
+        verdict.textContent = verdictText;
+        costList.innerHTML = costs.map((c) => `<li>${c}</li>`).join("");
+
+        const breakdown = document.getElementById("breakdown-mount");
+        breakdown.innerHTML = sectionScores
+          .map(
+            (s) => `
+    <div class="sb-row">
+      <div class="sb-name">${s.name}</div>
+      <div class="sb-track"><div class="sb-fill" style="width:${(s.score / s.max) * 100}%"></div></div>
+      <div class="sb-val mono">${s.score}/${s.max}</div>
+    </div>
+  `,
+          )
+          .join("");
+
+        sendToGHL({
+          first_name: name,
+          email: document.getElementById("cap-email").value.trim(),
+          business_name: document.getElementById("cap-business").value.trim(),
+          speed_to_lead_score: total,
+          speed_to_lead_max: MAX_SCORE,
+          speed_to_lead_band: band,
+          section_scores: sectionScores,
+        });
+
+        goTo("screen-results");
+      }
+    </script>
+  </body>
+</html>
